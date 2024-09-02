@@ -15,6 +15,8 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.ADIS16470_IMU.IMUAxis;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Constants.ModuleConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.utils.SwerveUtils;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -49,6 +51,10 @@ public class DriveSubsystem extends SubsystemBase {
   private double m_currentTranslationDir = 0.0;
   private double m_currentTranslationMag = 0.0;
 
+  public static double m_kP;
+  public static double m_kI;
+  public static double m_kD;
+
   private SlewRateLimiter m_magLimiter = new SlewRateLimiter(DriveConstants.kMagnitudeSlewRate);
   private SlewRateLimiter m_rotLimiter = new SlewRateLimiter(DriveConstants.kRotationalSlewRate);
   private double m_prevTime = WPIUtilJNI.now() * 1e-6;
@@ -66,6 +72,12 @@ public class DriveSubsystem extends SubsystemBase {
 
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
+    SmartDashboard.putNumber("Gain P",ModuleConstants.kTurningP);
+    SmartDashboard.putNumber("Gain I",ModuleConstants.kTurningI);
+    SmartDashboard.putNumber("Gain D",ModuleConstants.kTurningD);
+
+    SmartDashboard.putNumber("Position", m_frontLeft.getPosition().angle.getDegrees());
+
   }
 
   @Override
@@ -79,6 +91,11 @@ public class DriveSubsystem extends SubsystemBase {
             m_rearLeft.getPosition(),
             m_rearRight.getPosition()
         });
+
+    m_kP = SmartDashboard.getNumber("Gain P", m_kP);
+    m_kI = SmartDashboard.getNumber("Gain I", m_kI);
+    m_kD = SmartDashboard.getNumber("Gain D", m_kD);
+
   }
 
   /**
@@ -241,4 +258,5 @@ public class DriveSubsystem extends SubsystemBase {
   public double getTurnRate() {
     return m_gyro.getRate(IMUAxis.kZ) * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
   }
+
 }

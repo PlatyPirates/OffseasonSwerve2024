@@ -88,9 +88,9 @@ public class MAXSwerveModule {
 
     // Set the PID gains for the turning motor. Note these are example gains, and you
     // may need to tune them for your own robot!
-    m_turningPIDController.setP(ModuleConstants.kTurningP);
-    m_turningPIDController.setI(ModuleConstants.kTurningI);
-    m_turningPIDController.setD(ModuleConstants.kTurningD);
+    m_turningPIDController.setP(DriveSubsystem.m_kP);
+    m_turningPIDController.setI(DriveSubsystem.m_kI);
+    m_turningPIDController.setD(DriveSubsystem.m_kD);
     m_turningPIDController.setFF(ModuleConstants.kTurningFF);
     m_turningPIDController.setOutputRange(ModuleConstants.kTurningMinOutput,
         ModuleConstants.kTurningMaxOutput);
